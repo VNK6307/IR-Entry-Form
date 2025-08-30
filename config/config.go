@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	BotToken string
+	BotURL   string
 }
 
 func LoadConfig() (*Config, error) {
@@ -19,8 +20,14 @@ func LoadConfig() (*Config, error) {
 		return nil, errors.New("BOT_TOKEN environment variable not set")
 	}
 
+	baseUrl := os.Getenv("BOT_URL")
+	if baseUrl == "" {
+		return nil, errors.New("BOT_URL environment variable not set")
+	}
+
 	return &Config{
 			token,
+			baseUrl + token,
 		},
 		nil
 }

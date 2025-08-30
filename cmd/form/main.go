@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"racer/form/internal/config"
+	"racer/form/config"
 	"racer/form/internal/models"
 )
 
@@ -16,7 +16,8 @@ func main() {
 		log.Fatal("Could not load configuration", err)
 	}
 
-	fmt.Println(cfg.BotToken)
+	fmt.Println("Bot's token: ", cfg.BotToken)
+	fmt.Println("Bot's address:", cfg.BotURL)
 
 	questions := models.LoadFormQuestions()
 
