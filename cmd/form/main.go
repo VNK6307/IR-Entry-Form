@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"racer/form/config"
-	"racer/form/internal/models"
 )
 
 func main() {
@@ -16,13 +15,7 @@ func main() {
 		log.Fatal("Could not load configuration", err)
 	}
 
-	fmt.Println("Bot's token: ", cfg.BotToken)
-	fmt.Println("Bot's address:", cfg.BotURL)
-
-	questions := models.LoadFormQuestions()
-
-	for _, question := range questions {
-		fmt.Println(question)
-	}
+	fmt.Println("Bot's token: ", cfg.BotToken) // ToDo Delete after bot has done
+	fmt.Println("Bot's address:", cfg.BotURL)  // ToDo Delete after bot has done
 
 }
