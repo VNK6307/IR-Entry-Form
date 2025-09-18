@@ -1,4 +1,4 @@
-package service
+package services
 
 type Update struct {
 	UpdateID int64 `json:"update_id"`
