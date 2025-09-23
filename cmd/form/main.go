@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"log"
 	"racer/form/config"
+	"racer/form/internal/handlers"
 	"racer/form/internal/services"
 )
 
 type Bot struct {
 	telegram services.TelegramService
-	//handler  *handlers.Handler
+	handler  *handlers.Handler
 }
 
 func main() {
@@ -25,8 +26,9 @@ func main() {
 	fmt.Println("Bot's address:", cfg.BotURL)  // ToDo Delete after bot has done
 
 	tgService := services.NewTelegramService(cfg)
+	handler := handlers.NewHandler(tgService)
 
-	bot := &Bot{telegram: tgService}
+	bot := &Bot{tgService, handler}
 	bot.Start()
 
 }
@@ -40,7 +42,7 @@ func (bot *Bot) Start() {
 			continue
 		}
 		for _, update := range updates {
-			//b.handler.HandleUpdate(u)
+			bot.handler.HandleUpdate(update)
 			offset = update.UpdateID + 1
 		}
 
