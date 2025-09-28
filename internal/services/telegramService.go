@@ -8,10 +8,6 @@ import (
 	"time"
 )
 
-type TelegramService interface {
-	GetUpdates(offset int) ([]models.Update, error)
-}
-
 type telegramService struct {
 	baseURL string
 	client  *http.Client
