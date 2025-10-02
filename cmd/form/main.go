@@ -22,9 +22,6 @@ func main() {
 		log.Fatal("Could not load configuration", err)
 	}
 
-	fmt.Println("Bot's token: ", cfg.BotToken) // ToDo Delete after bot has done
-	fmt.Println("Bot's address:", cfg.BotURL)  // ToDo Delete after bot has done
-
 	tgService := services.NewTelegramService(cfg)
 	handler := handlers.NewHandler(tgService)
 

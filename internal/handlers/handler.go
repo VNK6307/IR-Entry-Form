@@ -23,23 +23,20 @@ func (handler *Handler) HandleUpdate(upd models.Update) {
 }
 
 func (handler *Handler) handleMessage(message *models.Message) {
-	//ToDo Realize me!
 	chatID, text, msgID := message.Chat.ID, message.Text, message.MessageID
 
 	fmt.Println("ChatID:", chatID, "Text:", text, "MessageID:", msgID)
 
 	switch text {
 	case "/personal":
-		fmt.Println("Здесь будет заполнение личной заявки.") //ToDo Realize me!
+		handler.startPersonalForm(chatID)
 	case "/team":
-		fmt.Println("Здесь будет заполнение командной заявки.") //ToDo Realize me!
+		handler.startTeamForm(chatID)
 	case "/list":
-		fmt.Println("Здесь будет реализован вывод списка заявленных пилотов.") //ToDo Realize me!
+		handler.sendCompetitors(chatID)
 	default:
-		fmt.Println("Здесь будет реализован ответ в случае получения неизвестной команды.") //ToDo Realize me!
-
+		handler.sendDefault(chatID)
 	}
-
 }
 
 func (handler *Handler) handleCallbackQuery(query any) {

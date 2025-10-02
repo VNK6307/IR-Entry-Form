@@ -1,5 +1,14 @@
 package models
 
+type UserState struct {
+	UserID        int64
+	ChatID        int64
+	Step          int
+	Data          map[string]string
+	LastBotMsgID  int
+	LastUserMsgID int
+}
+
 type InlineButton struct {
 	Text         string `json:"text"`
 	CallbackData string `json:"callback_data"`
