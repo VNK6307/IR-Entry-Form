@@ -7,11 +7,11 @@ import (
 )
 
 type Handler struct {
-	tlg services.TelegramService
+	tlgService services.TelegramService
 }
 
-func NewHandler(tlg services.TelegramService) *Handler {
-	return &Handler{tlg}
+func NewHandler(telegram services.TelegramService) *Handler {
+	return &Handler{telegram}
 }
 
 func (handler *Handler) HandleUpdate(upd models.Update) {
@@ -29,11 +29,16 @@ func (handler *Handler) handleMessage(message *models.Message) {
 
 	switch text {
 	case "/personal":
-		handler.startPersonalForm(chatID)
+		{
+			handler.startPersonalForm(chatID)
+			return // ToDo Это для чего? Что будет при отсутствии?
+		}
 	case "/team":
 		handler.startTeamForm(chatID)
 	case "/list":
 		handler.sendCompetitors(chatID)
+	case "/send":
+		handler.mailList(chatID)
 	default:
 		handler.sendDefault(chatID)
 	}

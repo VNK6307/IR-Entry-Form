@@ -27,3 +27,25 @@ func (tgSvc *telegramService) makeRequest(method string, payload interface{}) ([
 	}
 	return body, nil
 }
+
+func (tgSvc *telegramService) SendMessage(chatID int64, text string) (int, error) {
+	payload := map[string]interface{}{ // ToDo Почему ключ string? Как понять эту конструкцию?
+		"chat_id":    chatID,
+		"text":       text,
+		"parse_mode": "HTML",
+	}
+	res, err := tgSvc.makeRequest("sendMessage", payload)
+	if err != nil {
+		return 0, err
+	}
+	var result struct {
+		Result struct {
+			MessageID int `json:"message_id"`
+		}
+	}
+	err = json.Unmarshal(res, &result)
+	if err != nil {
+		return 0, err
+	}
+	return result.Result.MessageID, nil
+}
