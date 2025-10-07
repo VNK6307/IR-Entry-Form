@@ -21,11 +21,13 @@ type Update struct {
 }
 
 type Message struct {
-	MessageID int `json:"message_id"`
-	Chat      struct {
-		ID int64 `json:"id"`
-	}
-	Text string `json:"text,omitempty"`
+	MessageID int    `json:"message_id"`
+	Chat      Chat   `json:"chat"`
+	Text      string `json:"text,omitempty"`
+}
+
+type Chat struct {
+	ID uint64 `json:"id"`
 }
 
 type CallbackQuery struct {

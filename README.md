@@ -8,3 +8,12 @@
 ### Вопросы к 0710
 - Что должно быть в default switch, если второй ответ бота после получения команды будет ему не известен?
 Или делать через if-else?
+
+type keyboard struct {
+Buttons []Button
+Text string
+}
+
+type Button struct {
+Text steering
+}

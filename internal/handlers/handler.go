@@ -6,6 +6,14 @@ import (
 	"racer/form/internal/services"
 )
 
+const (
+	StateNone                   = 0
+	StateAwaitingTeamName       = 1
+	StateAwaitingNextCompetitor = 2
+)
+
+var State = make(map[uint64]uint8)
+
 type Handler struct {
 	tlgService services.TelegramService
 }
@@ -26,24 +34,39 @@ func (handler *Handler) handleMessage(message *models.Message) {
 	chatID, text, msgID := message.Chat.ID, message.Text, message.MessageID
 
 	fmt.Println("ChatID:", chatID, "Text:", text, "MessageID:", msgID)
+	fmt.Printf("%+v\n", State[chatID])
 
 	switch text {
 	case "/personal":
 		{
 			handler.startPersonalForm(chatID) // ToDo остановился здесь 0210
-			return // ToDo Это для чего? Что будет при отсутствии?
+			return                            // ToDo Это для чего? Что будет при отсутствии?
 		}
 	case "/team":
+
 		handler.startTeamForm(chatID)
 	case "/list":
 		handler.sendCompetitors(chatID)
 	case "/send":
 		handler.mailList(chatID)
+
 	default:
-		handler.sendDefault(chatID)
+		//handler.sendDefault(chatID)
+		handler.checkState(chatID, text)
+
 	}
 }
 
 func (handler *Handler) handleCallbackQuery(query any) {
 	//ToDo Realize me!
+}
+
+func (handler *Handler) checkState(chatID uint64, text string) {
+
+	switch State[chatID] {
+	case StateAwaitingTeamName:
+		handler.saveTeamName(chatID, text)
+	case StateAwaitingNextCompetitor:
+
+	}
 }
