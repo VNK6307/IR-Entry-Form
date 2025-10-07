@@ -6,13 +6,11 @@ import (
 	"os"
 )
 
-const formSize int = 12 // ToDo Переделать в получение из файла env
+var formQuestions []string
 
-var formQuestions [formSize]string
+func LoadFormQuestions(file string) []string {
 
-func LoadFormQuestions() [formSize]string {
-
-	var path = os.Getenv("QUESTIONS_PATH")
+	var path = os.Getenv("QUESTIONS_PATH") + file + ".yaml"
 
 	yamlFile, err := os.ReadFile(path)
 	if err != nil {

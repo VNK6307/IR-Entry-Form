@@ -30,7 +30,7 @@ func (handler *Handler) handleMessage(message *models.Message) {
 	switch text {
 	case "/personal":
 		{
-			handler.startPersonalForm(chatID)
+			handler.startPersonalForm(chatID) // ToDo остановился здесь 0210
 			return // ToDo Это для чего? Что будет при отсутствии?
 		}
 	case "/team":

@@ -29,7 +29,7 @@ func (tgSvc *telegramService) makeRequest(method string, payload interface{}) ([
 }
 
 func (tgSvc *telegramService) SendMessage(chatID int64, text string) (int, error) {
-	payload := map[string]interface{}{ // ToDo Почему ключ string? Как понять эту конструкцию?
+	payload := map[string]interface{}{ // ToDo Почему ключ string? Как понять эту конструкцию? Что является ключом?
 		"chat_id":    chatID,
 		"text":       text,
 		"parse_mode": "HTML",
