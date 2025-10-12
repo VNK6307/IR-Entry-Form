@@ -5,6 +5,7 @@ import (
 	"log"
 	"racer/form/config"
 	"racer/form/internal/handlers"
+	"racer/form/internal/repository"
 	"racer/form/internal/services"
 )
 
@@ -22,8 +23,10 @@ func main() {
 		log.Fatal("Could not load configuration", err)
 	}
 
+	teamRepo := repository.NewTeamRepository()
+
 	tgService := services.NewTelegramService(cfg)
-	handler := handlers.NewHandler(tgService)
+	handler := handlers.NewHandler(tgService, teamRepo)
 
 	bot := &Bot{tgService, handler}
 	bot.Start()
