@@ -6,12 +6,6 @@ import (
 	"racer/form/internal/services"
 )
 
-const (
-	StateNone                   = 0
-	StateAwaitingTeamName       = 1
-	StateAwaitingNextCompetitor = 2
-)
-
 var State = make(map[uint64]uint8)
 
 type Handler struct {
@@ -39,11 +33,10 @@ func (handler *Handler) handleMessage(message *models.Message) {
 	switch text {
 	case "/personal":
 		{
-			handler.startPersonalForm(chatID) // ToDo остановился здесь 0210
-			return                            // ToDo Это для чего? Что будет при отсутствии?
+			handler.startPersonalForm(chatID)
+			return // TODO Это для чего? Что будет при отсутствии?
 		}
 	case "/team":
-
 		handler.startTeamForm(chatID)
 	case "/list":
 		handler.sendCompetitors(chatID)
@@ -51,14 +44,12 @@ func (handler *Handler) handleMessage(message *models.Message) {
 		handler.mailList(chatID)
 
 	default:
-		//handler.sendDefault(chatID)
 		handler.checkState(chatID, text)
-
 	}
 }
 
 func (handler *Handler) handleCallbackQuery(query any) {
-	//ToDo Realize me!
+	//TODO Realize me!
 }
 
 func (handler *Handler) checkState(chatID uint64, text string) {
@@ -67,6 +58,7 @@ func (handler *Handler) checkState(chatID uint64, text string) {
 	case StateAwaitingTeamName:
 		handler.saveTeamName(chatID, text)
 	case StateAwaitingNextCompetitor:
+		// TODO Realize keyboard
 
 	}
 }

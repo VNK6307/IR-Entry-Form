@@ -2,6 +2,12 @@ package handlers
 
 import "fmt"
 
+const (
+	StateNone                   = 0
+	StateAwaitingTeamName       = 1
+	StateAwaitingNextCompetitor = 2
+)
+
 func (handler *Handler) startTeamForm(chatID uint64) {
 	//ToDo Realize me!
 
@@ -27,5 +33,5 @@ func (handler *Handler) saveTeamName(chatID uint64, text string) {
 	if err != nil {
 		return
 	}
-
+	// TODO Stopped here 0710
 }
