@@ -1,17 +1,22 @@
 package repositories
 
-import "racer/form/internal/models"
+import "fmt"
 
 type TeamRepository interface {
-	SaveTeamName(text string) (*models.Team, error)
+	SaveTeam(filePath string) error
 }
 
-func NewTeamRepository() *models.Team {
-	return &models.Team{}
+type Team struct {
+	TeamName   string   `json:"team_name"`
+	TeamMember []string `json:"team_member"`
 }
 
-func SaveTeamName(text string) (*models.Team, error) {
-	return &models.Team{
-		TeamName: text,
-	}, nil
+func NewTeamRepository() *Team {
+	return &Team{}
+}
+
+func (repo *Team) SaveTeam(filePath string) error {
+	fmt.Printf("Saving team %+v\n", repo)
+	// TODO Realize saving
+	return nil
 }

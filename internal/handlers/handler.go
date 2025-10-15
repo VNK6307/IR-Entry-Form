@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"racer/form/internal/models"
+	"racer/form/internal/repositories"
 	"racer/form/internal/services"
 )
 
@@ -11,10 +12,14 @@ var defaultText = "Неизвестная команда. Выберите ну�
 
 type Handler struct {
 	tlgService services.TelegramService
+	teamRepo   map[uint64]*repositories.Team
 }
 
 func NewHandler(telegram services.TelegramService) *Handler {
-	return &Handler{telegram}
+	return &Handler{
+		telegram,
+		make(map[uint64]*repositories.Team),
+	}
 }
 
 func (handler *Handler) HandleUpdate(upd models.Update) {
@@ -33,17 +38,13 @@ func (handler *Handler) handleMessage(message *models.Message) {
 
 	switch text {
 	case "/personal":
-		{
-			handler.startPersonalForm(chatID)
-			return // TODO Это для чего? Что будет при отсутствии?
-		}
+		handler.startPersonalForm(chatID)
 	case "/team":
 		handler.startTeamForm(chatID)
 	case "/list":
 		handler.sendCompetitors(chatID)
 	case "/send":
 		handler.mailList(chatID)
-
 	default:
 		handler.checkState(chatID, text)
 	}
@@ -58,6 +59,8 @@ func (handler *Handler) checkState(chatID uint64, text string) {
 	switch State[chatID] {
 	case WaitingTeamNameState:
 		handler.saveTeamName(chatID, text)
+	case WaitingFirstCompetitorState:
+		handler.saveTeamMember(chatID, text)
 	case WaitingNextCompetitorState:
 	// TODO Realize keyboard
 	case WaitingChoiceState:
