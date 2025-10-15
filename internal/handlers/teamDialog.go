@@ -1,17 +1,21 @@
 package handlers
 
-import "fmt"
+import (
+	"fmt"
+	"racer/form/internal/repositories"
+)
 
 const (
-	StateNone                   = 0
-	StateAwaitingTeamName       = 1
-	StateAwaitingNextCompetitor = 2
+	StateNone                  = 0
+	WaitingTeamNameState       = 1
+	WaitingNextCompetitorState = 2
+	WaitingChoiceState         = 3
 )
 
 func (handler *Handler) startTeamForm(chatID uint64) {
 	//ToDo Realize me!
 
-	State[chatID] = StateAwaitingTeamName // ToDo add mutex
+	State[chatID] = WaitingTeamNameState // ToDo add mutex
 
 	_, err := handler.tlgService.SendMessage(chatID, "Введите название вашей команды.")
 	if err != nil {
@@ -23,11 +27,11 @@ func (handler *Handler) saveTeamName(chatID uint64, text string) {
 	if text == "" {
 		_, err := handler.tlgService.SendMessage(chatID, "Введите название вашей команды.")
 		if err != nil {
-			return
+			repositories.SaveTeamName(text)
 		}
 	}
 	fmt.Printf("Название команды %s\n", text)
-	State[chatID] = StateAwaitingNextCompetitor
+	State[chatID] = WaitingNextCompetitorState
 
 	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и имя участника")
 	if err != nil {

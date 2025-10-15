@@ -9,3 +9,6 @@ Text string
 type Button struct {
 Text string
 }
+
+- нужно ли обрабатывать ошибки в командах? (commands 19...)
+- Как репозиторий добавить в хэндлер и нужно ли?

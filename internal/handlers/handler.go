@@ -7,6 +7,7 @@ import (
 )
 
 var State = make(map[uint64]uint8)
+var defaultText = "Неизвестная команда. Выберите нужную из меню."
 
 type Handler struct {
 	tlgService services.TelegramService
@@ -55,10 +56,14 @@ func (handler *Handler) handleCallbackQuery(query any) {
 func (handler *Handler) checkState(chatID uint64, text string) {
 
 	switch State[chatID] {
-	case StateAwaitingTeamName:
+	case WaitingTeamNameState:
 		handler.saveTeamName(chatID, text)
-	case StateAwaitingNextCompetitor:
-		// TODO Realize keyboard
-
+	case WaitingNextCompetitorState:
+	// TODO Realize keyboard
+	case WaitingChoiceState:
+		// TODO Realize case
+		fmt.Println("Waiting user's choice.")
+	default:
+		handler.SendDefault(chatID, defaultText)
 	}
 }

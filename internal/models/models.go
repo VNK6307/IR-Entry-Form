@@ -36,3 +36,9 @@ type CallbackQuery struct {
 	Message struct{ Chat struct{ ID int64 } }
 	Data    string
 }
+
+// Team TODO added 1510
+type Team struct {
+	TeamName   string `json:"team_name"`
+	TeamMember string `json:"team_member"`
+}

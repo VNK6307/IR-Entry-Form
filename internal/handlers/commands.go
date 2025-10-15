@@ -5,7 +5,7 @@ import (
 	"racer/form/internal/models"
 )
 
-func (handler *Handler) startPersonalForm(chatID uint64) {
+func (handler *Handler) startPersonalForm(chatID uint64) { // TODO Переделать на получение формы из кода
 
 	//TODO Realize me!
 
@@ -27,9 +27,8 @@ func (handler *Handler) sendCompetitors(chatID uint64) {
 		return // ToDo Обработать ошибку???
 	}
 }
-func (handler *Handler) sendDefault(chatID uint64) {
-	//TODO Realize me!
-	_, err := handler.tlgService.SendMessage(chatID, "Здесь будет реализован ответ в случае получения неизвестной команды.")
+func (handler *Handler) SendDefault(chatID uint64, text string) {
+	_, err := handler.tlgService.SendMessage(chatID, text)
 	if err != nil {
 		return // ToDo Обработать ошибку???
 	}
