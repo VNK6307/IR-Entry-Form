@@ -34,7 +34,7 @@ func (handler *Handler) handleMessage(message *models.Message) {
 	chatID, text, msgID := message.Chat.ID, message.Text, message.MessageID
 
 	fmt.Println("ChatID:", chatID, "Text:", text, "MessageID:", msgID)
-	fmt.Printf("%+v\n", State[chatID])
+	fmt.Printf("%+v\n", State[chatID]) // TODO Delete before completion
 
 	switch text {
 	case "/personal":

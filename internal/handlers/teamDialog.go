@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"racer/form/internal/repositories"
 )
 
@@ -20,15 +21,17 @@ func (handler *Handler) startTeamForm(chatID uint64) {
 
 	_, err := handler.tlgService.SendMessage(chatID, "Введите название вашей команды.")
 	if err != nil {
-		return // ToDo Обработать ошибку??? Add to logger
+		log.Printf("SendMessage mistake: %v", err)
+		return
 	}
 }
 
 func (handler *Handler) saveTeamName(chatID uint64, text string) {
 	if text == "" {
-		_, err := handler.tlgService.SendMessage(chatID, "Введите название вашей команды.")
+		_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению. Введите название вашей команды.")
 		if err != nil {
-			return // ToDo Обработать ошибку??? Add to logger
+			log.Printf("SendMessage mistake: %v", err)
+			return
 		}
 	}
 
@@ -36,12 +39,11 @@ func (handler *Handler) saveTeamName(chatID uint64, text string) {
 
 	handler.teamRepo[chatID].TeamName = text
 
-	fmt.Printf("Название команды %+v\n", handler.teamRepo[chatID]) // TODO Delete before end
-
 	State[chatID] = WaitingFirstCompetitorState
 
-	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя участника")
+	_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению. Введите Фамилию и Имя участника")
 	if err != nil {
+		log.Printf("SendMessage mistake: %v", err)
 		return
 	}
 }
@@ -49,20 +51,23 @@ func (handler *Handler) saveTeamName(chatID uint64, text string) {
 func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 	if text == "" {
 		if text == "" {
-			_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя участника")
+			_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению. Введите Фамилию и Имя участника")
 			if err != nil {
-				return // ToDo Обработать ошибку??? Add to logger
+				log.Printf("SendMessage mistake: %v", err)
+				return
 			}
 		}
 	}
 
 	handler.teamRepo[chatID].TeamMember = append(handler.teamRepo[chatID].TeamMember, text)
-	fmt.Printf("Команды %+v\n", handler.teamRepo[chatID]) // TODO Delete before end
+
+	fmt.Printf("Команды %+v\n", handler.teamRepo[chatID]) // TODO Delete before completion
 
 	//State[chatID] = WaitingNextCompetitorState
 
 	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя следующего участника")
 	if err != nil {
+		log.Printf("SendMessage mistake: %v", err)
 		return
 	}
 
