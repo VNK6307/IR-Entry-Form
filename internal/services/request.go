@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"racer/form/internal/models"
 )
 
 func (tgSvc *telegramService) makeRequest(method string, payload interface{}) ([]byte, error) {
@@ -48,4 +49,32 @@ func (tgSvc *telegramService) SendMessage(chatID uint64, text string) (int, erro
 		return 0, err
 	}
 	return result.Result.MessageID, nil
+}
+
+func (tgSvc *telegramService) SendMessageWithKeyboard(chatID uint64, text string, keyboard [][]models.InlineButton) (int, error) {
+	payload := map[string]interface{}{
+		"chat_id":    chatID,
+		"text":       text,
+		"parse_mode": "HTML",
+		"reply_markup": map[string]interface{}{
+			"inline_keyboard": keyboard,
+		},
+	}
+
+	body, err := tgSvc.makeRequest("sendMessage", payload)
+	if err != nil {
+		return 0, fmt.Errorf("telegram error: %w", err)
+	}
+
+	var res struct {
+		Result struct {
+			MessageID int `json:"message_id"`
+		} `json:"result"`
+	}
+
+	if err := json.Unmarshal(body, &res); err != nil {
+		return 0, fmt.Errorf("unmarshal error: %w", err)
+	}
+
+	return res.Result.MessageID, nil
 }

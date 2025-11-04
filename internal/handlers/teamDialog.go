@@ -10,8 +10,8 @@ const (
 	StateNone                   = 0
 	WaitingTeamNameState        = 1
 	WaitingFirstCompetitorState = 2
-	WaitingNextCompetitorState  = 3
-	WaitingChoiceState          = 4
+	WaitingUserChoiceState      = 3
+	WaitingNextCompetitorState  = 4
 )
 
 func (handler *Handler) startTeamForm(chatID uint64) {
@@ -63,17 +63,18 @@ func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 
 	fmt.Printf("Команды %+v\n", handler.teamRepo[chatID]) // TODO Delete before completion
 
-	//State[chatID] = WaitingNextCompetitorState
+	//_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя следующего участника")
+	//if err != nil {
+	//	log.Printf("SendMessage mistake: %v", err)
+	//	return
+	//}
 
-	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя следующего участника")
-	if err != nil {
-		log.Printf("SendMessage mistake: %v", err)
-		return
-	}
+	// TODO 1510 Продолжить с этого места
+
+	State[chatID] = WaitingUserChoiceState
 
 	// TODO Send keyboard
 	// TODO Кнопки - следующий, посмотреть список, отправить заявку
 
-	// TODO 1510 Продолжить с этого места
-	//handler.teamRepo[chatID].SaveTeam("")
+	// TODO handler.teamRepo[chatID].SaveTeam("")
 }

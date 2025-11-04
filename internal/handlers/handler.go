@@ -63,7 +63,7 @@ func (handler *Handler) checkState(chatID uint64, text string) {
 		handler.saveTeamMember(chatID, text)
 	case WaitingNextCompetitorState:
 	// TODO Realize keyboard
-	case WaitingChoiceState:
+	case WaitingUserChoiceState:
 		// TODO Realize case
 		fmt.Println("Waiting user's choice.")
 	default:
