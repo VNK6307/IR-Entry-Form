@@ -53,20 +53,3 @@ func (handler *Handler) handleMessage(message *models.Message) {
 func (handler *Handler) handleCallbackQuery(query any) {
 	//TODO Realize me!
 }
-
-func (handler *Handler) checkState(chatID uint64, text string) {
-
-	switch State[chatID] {
-	case WaitingTeamNameState:
-		handler.saveTeamName(chatID, text)
-	case WaitingFirstCompetitorState:
-		handler.saveTeamMember(chatID, text)
-	case WaitingNextCompetitorState:
-	// TODO Realize keyboard
-	case WaitingUserChoiceState:
-		// TODO Realize case
-		fmt.Println("Waiting user's choice.")
-	default:
-		handler.SendDefault(chatID, defaultText)
-	}
-}

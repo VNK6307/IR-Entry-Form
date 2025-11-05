@@ -6,14 +6,6 @@ import (
 	"racer/form/internal/repositories"
 )
 
-const (
-	StateNone                   = 0
-	WaitingTeamNameState        = 1
-	WaitingFirstCompetitorState = 2
-	WaitingUserChoiceState      = 3
-	WaitingNextCompetitorState  = 4
-)
-
 func (handler *Handler) startTeamForm(chatID uint64) {
 	//ToDo Realize me!
 
@@ -28,7 +20,7 @@ func (handler *Handler) startTeamForm(chatID uint64) {
 
 func (handler *Handler) saveTeamName(chatID uint64, text string) {
 	if text == "" {
-		_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению. Введите название вашей команды.")
+		_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению.\n Введите название вашей команды.")
 		if err != nil {
 			log.Printf("SendMessage mistake: %v", err)
 			return
@@ -41,7 +33,7 @@ func (handler *Handler) saveTeamName(chatID uint64, text string) {
 
 	State[chatID] = WaitingFirstCompetitorState
 
-	_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению. Введите Фамилию и Имя участника")
+	_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению.\n Введите Фамилию и Имя участника")
 	if err != nil {
 		log.Printf("SendMessage mistake: %v", err)
 		return
@@ -63,13 +55,11 @@ func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 
 	fmt.Printf("Команды %+v\n", handler.teamRepo[chatID]) // TODO Delete before completion
 
-	//_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя следующего участника")
-	//if err != nil {
-	//	log.Printf("SendMessage mistake: %v", err)
-	//	return
-	//}
-
-	// TODO 1510 Продолжить с этого места
+	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя следующего участника")
+	if err != nil {
+		log.Printf("SendMessage mistake: %v", err)
+		return
+	}
 
 	State[chatID] = WaitingUserChoiceState
 
