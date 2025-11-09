@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"racer/form/config"
 	"racer/form/internal/models"
@@ -39,5 +40,8 @@ func (tgSvc *telegramService) GetUpdates(offset int) ([]models.Update, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Printf("%+v\n", rslt.Result) // TODO Как посмотреть CallBackQuery?
+
 	return rslt.Result, nil
 }
