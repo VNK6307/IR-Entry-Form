@@ -45,12 +45,10 @@ func (handler *Handler) saveTeamName(chatID uint64, text string) {
 
 func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 	if text == "" {
-		if text == "" {
-			_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению. Введите Фамилию и Имя участника")
-			if err != nil {
-				log.Printf("SendMessage mistake: %v", err)
-				return
-			}
+		_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению. Введите Фамилию и Имя участника")
+		if err != nil {
+			log.Printf("SendMessage mistake: %v", err)
+			return
 		}
 	}
 
@@ -80,5 +78,8 @@ func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 		row2,
 	}
 
-	handler.tlgService.SendMessageWithKeyboard(chatID, teamChoiceQuestion, teamButtons)
+	_, err = handler.tlgService.SendMessageWithKeyboard(chatID, teamChoiceQuestion, teamButtons)
+	if err != nil {
+		return
+	}
 }
