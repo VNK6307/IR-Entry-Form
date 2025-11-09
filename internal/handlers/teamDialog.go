@@ -80,5 +80,8 @@ func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 		row2,
 	}
 
-	handler.tlgService.SendMessageWithKeyboard(chatID, teamChoiceQuestion, teamButtons)
+	_, err = handler.tlgService.SendMessageWithKeyboard(chatID, teamChoiceQuestion, teamButtons)
+	if err != nil {
+		return
+	}
 }
