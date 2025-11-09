@@ -3,8 +3,11 @@ package handlers
 import (
 	"fmt"
 	"log"
+	"racer/form/internal/models"
 	"racer/form/internal/repositories"
 )
+
+var teamChoiceQuestion = "<b>Выберите Дальнейшее действие:</b>\n"
 
 func (handler *Handler) startTeamForm(chatID uint64) {
 	//ToDo Realize me!
@@ -55,7 +58,7 @@ func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 
 	fmt.Printf("Команды %+v\n", handler.teamRepo[chatID]) // TODO Delete before completion
 
-	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя следующего участника")
+	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя следующего участника") // TODO Нужен ли?????
 	if err != nil {
 		log.Printf("SendMessage mistake: %v", err)
 		return
@@ -63,8 +66,19 @@ func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 
 	State[chatID] = WaitingUserChoiceState
 
-	// TODO Send keyboard
-	// TODO Кнопки - следующий, посмотреть список, отправить заявку
+	row1 := []models.InlineButton{
+		{Text: "Следующий участник", CallbackData: "nextTeamMember"},
+	}
 
-	// TODO handler.teamRepo[chatID].SaveTeam("")
+	row2 := []models.InlineButton{
+		{Text: "Проверить ввод", CallbackData: "checkTeam"},
+		{Text: "Отправить заявку", CallbackData: "sendForm"},
+	}
+
+	teamButtons := [][]models.InlineButton{
+		row1,
+		row2,
+	}
+
+	handler.tlgService.SendMessageWithKeyboard(chatID, teamChoiceQuestion, teamButtons)
 }

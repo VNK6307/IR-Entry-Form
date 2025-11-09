@@ -21,7 +21,8 @@ func (handler *Handler) checkState(chatID uint64, text string) {
 	// TODO Realize keyboard
 	case WaitingUserChoiceState:
 		// TODO Realize case
-		fmt.Println("Waiting user's choice.")
+		fmt.Println("Waiting user's choice.") // TODO Delete before finish
+
 	default:
 		handler.SendDefault(chatID, defaultText)
 	}
