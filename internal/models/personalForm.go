@@ -21,7 +21,7 @@ func GetQuestions() []Question {
 		{"Group", "🏁 Выберите зачетную группу:", InlineChoice,
 			[]string{"Standard 90", "Standard 130", "Standard 170", "Street 210", "Sport 2000", "Unlim", "Классика", "Спортпрототип"}},
 		{"Classification", "👥 Выберите классификацию:", InlineChoice,
-			[]string{"Junior", "Junior, до 16 лет", "Lady"}},
+			[]string{"Junior", "Junior, до 16 лет", "Lady", "Без классификации"}},
 		{"EngineVolume", "⚙️ Введите объем двигателя:", InputText, nil},
 		{"MaxPower", "💪 Введите максимальную мощность (л.с.):", InputText, nil},
 		{"Weight", "⚖️ Введите вес автомобиля (кг):", InputText, nil},
