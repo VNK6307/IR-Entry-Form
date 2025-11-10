@@ -22,7 +22,7 @@ func (handler *Handler) saveTeamName(chatID uint64, text string) {
 
 	handler.teamRepo[chatID].TeamName = text
 
-	State[chatID] = WaitingFirstCompetitorState
+	State[chatID] = WaitingCompetitorState
 
 	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя участника\nЭто поле обязательно к заполнению.")
 	if err != nil {
@@ -51,12 +51,12 @@ func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 }
 func (handler *Handler) askTeamChoice(chatID uint64) {
 	row1 := []models.InlineButton{
-		{Text: "Следующий участник", CallbackData: "nextTeamMember"},
+		{Text: "Следующий участник", CallbackData: "team:nextTeamMember"},
 	}
 
 	row2 := []models.InlineButton{
-		{Text: "Проверить ввод", CallbackData: "checkTeam"},
-		{Text: "Отправить заявку", CallbackData: "sendForm"},
+		{Text: "Проверить ввод", CallbackData: "team:checkTeam"},
+		{Text: "Отправить заявку", CallbackData: "team:sendForm"},
 	}
 
 	teamButtons := [][]models.InlineButton{

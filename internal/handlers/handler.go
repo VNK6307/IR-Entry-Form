@@ -5,6 +5,7 @@ import (
 	"racer/form/internal/models"
 	"racer/form/internal/repositories"
 	"racer/form/internal/services"
+	"strings"
 )
 
 var State = make(map[uint64]uint8)
@@ -50,6 +51,21 @@ func (handler *Handler) handleMessage(message *models.Message) {
 	}
 }
 
-func (handler *Handler) handleCallbackQuery(query any) {
+func (handler *Handler) handleCallbackQuery(callbackQuery *models.CallbackQuery) {
 	//TODO Realize me!
+	chatID := uint64(callbackQuery.Message.Chat.ID)
+	//userID := callbackQuery.From.ID
+	fmt.Printf("ChatID with buttons: %d\n", chatID) // TODO Delete!
+
+	parts := strings.SplitN(callbackQuery.Data, ":", 2)
+	if len(parts) != 2 {
+		handler.tlgService.SendMessage(chatID, "Ошибка: неверный формат ответа") // TODO Такая ошибка возможна?
+		return
+	}
+
+	if parts[0] == "team" {
+		handler.handleTeamCallbacks(chatID, parts[1])
+		return
+	}
+
 }

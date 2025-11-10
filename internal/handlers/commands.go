@@ -16,7 +16,7 @@ func (handler *Handler) startPersonalForm(chatID uint64) {
 
 func (handler *Handler) startTeamForm(chatID uint64) {
 
-	State[chatID] = WaitingTeamNameState // ToDo add mutex
+	State[chatID] = WaitingTeamNameState
 
 	_, err := handler.tlgService.SendMessage(chatID, "Введите название вашей команды.")
 	if err != nil {

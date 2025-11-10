@@ -33,6 +33,8 @@ type Chat struct {
 type CallbackQuery struct {
 	ID      string
 	From    struct{ ID int64 }
-	Message struct{ Chat struct{ ID int64 } }
-	Data    string
+	Message struct {
+		Chat struct{ ID int64 }
+	}
+	Data string
 }

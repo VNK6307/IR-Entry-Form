@@ -3,11 +3,11 @@ package handlers
 import "fmt"
 
 const (
-	StateNone                   = 0
-	WaitingTeamNameState        = 1
-	WaitingFirstCompetitorState = 2
-	WaitingUserChoiceState      = 3
-	WaitingNextCompetitorState  = 4
+	StateNone              = 0
+	WaitingTeamNameState   = 1
+	WaitingCompetitorState = 2
+	WaitingUserChoiceState = 3
+	//WaitingNextCompetitorState  = 4
 )
 
 func (handler *Handler) checkState(chatID uint64, text string) {
@@ -15,7 +15,7 @@ func (handler *Handler) checkState(chatID uint64, text string) {
 	switch State[chatID] {
 	case WaitingTeamNameState:
 		handler.saveTeamName(chatID, text)
-	case WaitingFirstCompetitorState:
+	case WaitingCompetitorState:
 		handler.saveTeamMember(chatID, text)
 	// TODO Realize keyboard
 	case WaitingUserChoiceState:
@@ -23,7 +23,7 @@ func (handler *Handler) checkState(chatID uint64, text string) {
 		handler.askTeamChoice(chatID)
 		// TODO Realize case
 
-	case WaitingNextCompetitorState:
+	//case WaitingNextCompetitorState:
 
 	default:
 		handler.SendDefault(chatID, defaultText)
