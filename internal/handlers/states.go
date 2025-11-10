@@ -17,11 +17,13 @@ func (handler *Handler) checkState(chatID uint64, text string) {
 		handler.saveTeamName(chatID, text)
 	case WaitingFirstCompetitorState:
 		handler.saveTeamMember(chatID, text)
-	case WaitingNextCompetitorState:
 	// TODO Realize keyboard
 	case WaitingUserChoiceState:
-		// TODO Realize case
 		fmt.Println("Waiting user's choice.") // TODO Delete before finish
+		handler.askTeamChoice(chatID)
+		// TODO Realize case
+
+	case WaitingNextCompetitorState:
 
 	default:
 		handler.SendDefault(chatID, defaultText)

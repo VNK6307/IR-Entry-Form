@@ -7,19 +7,7 @@ import (
 	"racer/form/internal/repositories"
 )
 
-var teamChoiceQuestion = "<b>Выберите Дальнейшее действие:</b>\n"
-
-func (handler *Handler) startTeamForm(chatID uint64) {
-	//ToDo Realize me!
-
-	State[chatID] = WaitingTeamNameState // ToDo add mutex
-
-	_, err := handler.tlgService.SendMessage(chatID, "Введите название вашей команды.")
-	if err != nil {
-		log.Printf("SendMessage mistake: %v", err)
-		return
-	}
-}
+var teamChoiceQuestion = "<b>Выберите дальнейшее действие:</b>\n"
 
 func (handler *Handler) saveTeamName(chatID uint64, text string) {
 	if text == "" {
@@ -36,7 +24,7 @@ func (handler *Handler) saveTeamName(chatID uint64, text string) {
 
 	State[chatID] = WaitingFirstCompetitorState
 
-	_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению.\n Введите Фамилию и Имя участника")
+	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя участника\nЭто поле обязательно к заполнению.")
 	if err != nil {
 		log.Printf("SendMessage mistake: %v", err)
 		return
@@ -44,26 +32,24 @@ func (handler *Handler) saveTeamName(chatID uint64, text string) {
 }
 
 func (handler *Handler) saveTeamMember(chatID uint64, text string) {
-	if text == "" {
-		_, err := handler.tlgService.SendMessage(chatID, "Это поле обязательно к заполнению. Введите Фамилию и Имя участника")
-		if err != nil {
-			log.Printf("SendMessage mistake: %v", err)
-			return
-		}
-	}
-
-	handler.teamRepo[chatID].TeamMember = append(handler.teamRepo[chatID].TeamMember, text)
-
-	fmt.Printf("Команды %+v\n", handler.teamRepo[chatID]) // TODO Delete before completion
-
-	_, err := handler.tlgService.SendMessage(chatID, "Введите Фамилию и Имя следующего участника") // TODO Нужен ли?????
-	if err != nil {
-		log.Printf("SendMessage mistake: %v", err)
-		return
-	}
 
 	State[chatID] = WaitingUserChoiceState
 
+	fmt.Printf("State = %+v\n", State[chatID]) // TODO Delete before finish
+
+	handler.teamRepo[chatID].TeamMember = append(handler.teamRepo[chatID].TeamMember, text)
+
+	fmt.Printf("Команда -  %+v\n", handler.teamRepo[chatID]) // TODO Delete before finish
+
+	_, err := handler.tlgService.SendMessage(chatID, teamChoiceQuestion)
+	if err != nil {
+		return
+	}
+
+	handler.askTeamChoice(chatID)
+
+}
+func (handler *Handler) askTeamChoice(chatID uint64) {
 	row1 := []models.InlineButton{
 		{Text: "Следующий участник", CallbackData: "nextTeamMember"},
 	}
@@ -78,7 +64,7 @@ func (handler *Handler) saveTeamMember(chatID uint64, text string) {
 		row2,
 	}
 
-	_, err = handler.tlgService.SendMessageWithKeyboard(chatID, teamChoiceQuestion, teamButtons)
+	_, err := handler.tlgService.SendMessageWithKeyboard(chatID, "Варианты:\n", teamButtons)
 	if err != nil {
 		return
 	}
