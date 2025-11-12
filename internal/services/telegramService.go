@@ -39,5 +39,8 @@ func (tgSvc *telegramService) GetUpdates(offset int) ([]models.Update, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	//fmt.Printf("%+v\n", rslt.Result) // TODO Как посмотреть CallBackQuery?
+
 	return rslt.Result, nil
 }
